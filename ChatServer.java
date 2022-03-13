@@ -6,7 +6,7 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 public class ChatServer {
-    static ArrayList<Client> clients = new ArrayList<>();
+    ArrayList<Client> clients = new ArrayList<>();
     ServerSocket server;
 
     ChatServer() throws IOException{
@@ -16,14 +16,13 @@ public class ChatServer {
 
     void messAllPersons(String str){
         for(Client client : clients){
-            client.receiveMessage(str);
+            if (client != null) client.receiveMessage(str);
         }
     }
     public void run(){
         try {
             while(true) {
-                Socket socket = server.accept();
-                clients.add(new Client(socket, this));
+                clients.add(new Client(server.accept(), this));
             }
         }catch(IOException e){
             e.printStackTrace();
